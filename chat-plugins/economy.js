@@ -4,13 +4,13 @@ let fs = require('fs');
 let path = require('path');
 
 let shop = [
-	['Symbol', 'Buys a custom symbol to go infront of name and puts you at top of userlist. (Temporary until restart, certain symbols are blocked)', 5],
-	['Fix', 'Buys the ability to alter your current custom avatar or trainer card. (don\'t buy if you have neither)', 10],
-	['Avatar', 'Buys an custom avatar to be applied to your name (You supply. Images larger than 80x80 may not show correctly)', 20],
-	['League Room', 'Purchases a room at a reduced rate for use with a league.  A roster must be supplied with at least 10 members for this room.', 25],
-	['Trainer', 'Buys a trainer card which shows information through a command. (You supply, can be refused)', 40],
-	['Staff Help', 'Staff member will help set up roomintros and anything else needed in a room. Response may not be immediate.', 50],
-	['Room', 'Buys a chatroom for you to own. (within reason, can be refused)', 100]
+	['Símbolo', 'Compra un símbolo para estar en lo alto de la lista de usuarios', 5],
+	['Arreglo', 'Compra el derecho a cambiar algo que hayas comprado: (Custom avatar, TC, etc.)', 10],
+	['Avatar', 'Compra un avatar personalizado (Preferible de 80x80)', 20],
+	['Sala de Liga', 'Compra una sala con el uso exclusivo de hacer una liga (con un mínimo de 8 miembros).', 25],
+	['TC', 'Compra una tarjeta de entrenador.', 40],
+	['Ayuda del staff', 'Compras el derecho de que un miembro del staff te ayude inmediatamente.', 50],
+	['Sala de chat', 'Compra una sala propia (puede ser pública o privada según lo desees)', 100]
 ];
 
 let shopDisplay = getShopDisplay(shop);
@@ -27,7 +27,7 @@ let shopDisplay = getShopDisplay(shop);
  * @returns {String}
  */
 function currencyName(amount) {
-	let name = " buck";
+	let name = "bucks";
 	return amount === 1 ? name : name + "s";
 }
 
@@ -113,11 +113,11 @@ function findItem(item, money) {
  * @param {Number} cost - for lottery
  */
 function handleBoughtItem(item, user, cost) {
-	if (item === 'symbol') {
+	if (item === 'Símbolo') {
 		user.canCustomSymbol = true;
-		this.sendReply("You have purchased a custom symbol. You can use /customsymbol to get your custom symbol.");
-		this.sendReply("You will have this until you log off for more than an hour.");
-		this.sendReply("If you do not want your custom symbol anymore, you may use /resetsymbol to go back to your old symbol.");
+		this.sendReply("Has comprado un símbolo, usa el comando /customsymbol [Símbolo], para obtenerlo.");
+		this.sendReply("Tendrás esto hasta que cierres sesión por más de una hora.");
+		this.sendReply("Si ya no desea su símbolo puede uilizar /resetsymbol para quitarlo.");
 	} else {
 		let msg = '**' + user.name + " has bought " + item + ".**";
 		Rooms.rooms.staff.add('|c|~Shop Alert|' + msg);
@@ -248,7 +248,7 @@ exports.commands = {
 		if (!user.canCustomSymbol && user.id !== user.userid) return this.errorReply("You need to buy this item from the shop.");
 		if (!target || target.length > 1) return this.parse('/help customsymbol');
 		if (target.match(/[A-Za-z\d]+/g) || '|?!+$%@\u2605=&~#\u03c4\u00a3\u03dd\u03b2\u039e\u03a9\u0398\u03a3\u00a9'.indexOf(target) >= 0) {
-			return this.errorReply("Sorry, but you cannot change your symbol to this for safety/stability reasons.");
+			return this.errorReply("Lo sentimos no puede cambiar su símbolo por razones de seguridad.");
 		}
 		user.customSymbol = target;
 		user.updateIdentity();
